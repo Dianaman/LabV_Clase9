@@ -1,0 +1,41 @@
+Dialogs
+
+Popups con una particularidad: son asíncronos, la app sigue corriendo en background, la activity sólo se tapa.
+Se debe generar un listener para escuchar si se lanzó, si se canceló, etc.
+
+Debemos generar una clase que extienda de DialogFragment (supportv4 en viejas versiones y androidx.fragment.app.DialogFragment en nuevas)
+Sobreescribimos onCreateDialog
+
+@Override
+public Dialog onCreateDialog(Bundle b){
+	AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
+        build.setTitle("Titulo");
+        build.setMessage("Mensaje");
+
+        build.setPositiveButton("Ok", null); // posicionado a la derecha
+        build.setNegativeButton("Cancel", null); //posicionado a la izq de la parte derecha
+        build.setNeutralButton("Ajem", null); // posicionado a  la izquierda
+
+        AlertDialog ad = build.create();
+        return ad;
+}
+
+Un activity puede tener muchos fragments, que serían como pedazos del activity.
+
+Dialogo dialogo = new Dialogo(); // podríamos setear acá o en un setter los mensajes
+dialogo.show(this.getSupportFragmentManager(), "main");
+
+Hay un objeto de tipo View que nos va a permitir diseñar
+
+//dentro de la clase Dialogo
+{
+	...
+	View v = LayoutInflater.from(getContext()).inflate(R.layout.popup, null);
+	build.setView(v);
+
+	ListenerClick listener = new ListenerClick(v);
+	...
+}
+
+y en el listener recuperamos el View y con ello el EditText
+
